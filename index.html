@@ -438,45 +438,136 @@ html{visibility:hidden!important;}
     });
   }
 
-  // ── 全部解碼：L1 (iframes) + L5 (outer CJK) ─────────
-  function _decodeAll(){
-    // L5：找所有 [data-c5] 解碼回原內容
-    var l5els = document.querySelectorAll('[data-c5]');
-    for(var i=0;i<l5els.length;i++){
-      var el = l5els[i];
-      var enc = el.getAttribute('data-c5');
-      if(!enc) continue;
+  // ── L10：Lazy decode + Save-As/Print 三重防護 (wy-l10-active) ──
+  function _decodeAllL5(){
+    document.querySelectorAll('[data-c5]').forEach(function(el){
+      if(el.getAttribute('data-decoded') === '1') return;
       try{
-        el.innerHTML = _decode(enc);
-        el.removeAttribute('data-c5');
+        el.innerHTML = _decode(el.getAttribute('data-c5'));
+        el.setAttribute('data-decoded', '1');
       }catch(e){}
-    }
-    // L1：iframe srcdoc
-    var l1els = document.querySelectorAll('iframe.ch-frame[data-c1]');
-    for(var j=0;j<l1els.length;j++){
-      var f = l1els[j];
-      var enc = f.getAttribute('data-c1');
-      if(!enc) continue;
-      try{
-        f.setAttribute('srcdoc', _decode(enc));
-        f.removeAttribute('data-c1');
-      }catch(e){}
-    }
+    });
   }
+  function _decodeOneL1(f){
+    if(!f || !f.hasAttribute('data-c1')) return;
+    if(f.getAttribute('data-decoded') === '1') return;
+    try{
+      f.setAttribute('srcdoc', _decode(f.getAttribute('data-c1')));
+      f.setAttribute('data-decoded', '1');
+      // 觸發 master script 的 resize handler 重算高度
+      if(typeof window.dispatchEvent==='function'){
+        try{ window.dispatchEvent(new Event('resize')); }catch(e){}
+      }
+    }catch(e){}
+  }
+  var _IFRAME_PLACEHOLDER = "<!doctype html><meta charset=utf-8><style>html,body{margin:0;background:transparent;}</style>";
+  function _wipeOneL1(f){
+    if(!f || f.getAttribute('data-decoded') !== '1') return;
+    f.setAttribute('srcdoc', _IFRAME_PLACEHOLDER);
+    f.removeAttribute('data-decoded');
+  }
+  function _wipeAllL1(){
+    document.querySelectorAll('iframe.ch-frame[data-c1][data-decoded="1"]').forEach(_wipeOneL1);
+  }
+  // 暴露給外部 console 不到（IIFE 隔離），但供下方 _ping 成功 callback 用
+  window.__wyL10 = {
+    decodeAllL5: _decodeAllL5,
+    decodeOneL1: _decodeOneL1,
+    wipeAllL1:   _wipeAllL1
+  };
+
+  // ── （舊 _decodeAll 已被 L10 取代，但保留 stub 避免殘餘呼叫出錯）
+  function _decodeAll(){ /* L10: replaced */ }
 
   // 同步檢查通過後 → 啟動非同步 liveness check
   _ping().then(function(ok){
-    if(!ok) return;  // ping 失敗 → 維持空白
-    try{ _decodeAll(); }catch(e){ return; }
-    // 解除 pre-guard，揭露頁面
+    if(!ok) return;
+
+    // (1) 外層 CJK 區塊一次性解碼（hero/preface/總目錄/sidebar/ch-head/bridge-label/footer）
+    try{ window.__wyL10.decodeAllL5(); }catch(e){ return; }
+
+    // (2) iframe lazy decode：IntersectionObserver
+    if(typeof IntersectionObserver !== 'undefined'){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          var el = e.target;
+          if(e.isIntersecting){
+            window.__wyL10.decodeOneL1(el);
+          } else {
+            // 離開視野 3 秒後 re-encode（避免來回捲動 flicker）
+            setTimeout(function(){
+              try{
+                var rect = el.getBoundingClientRect();
+                var farAway = (rect.bottom < -1500) || (rect.top > window.innerHeight + 1500);
+                if(farAway){
+                  if(el.getAttribute('data-decoded') === '1'){
+                    el.setAttribute('srcdoc', _IFRAME_PLACEHOLDER);
+                    el.removeAttribute('data-decoded');
+                  }
+                }
+              }catch(ex){}
+            }, 3000);
+          }
+        });
+      }, {rootMargin: '1000px'});
+      document.querySelectorAll('iframe.ch-frame[data-c1]').forEach(function(f){ io.observe(f); });
+    } else {
+      // fallback：直接全解
+      document.querySelectorAll('iframe.ch-frame[data-c1]').forEach(function(f){
+        window.__wyL10.decodeOneL1(f);
+      });
+    }
+
+    // (3) wipe 觸發點：列印 / 失焦 / 切到背景 / 卸載
+    var W = window.__wyL10.wipeAllL1;
+    window.addEventListener('beforeprint', W);
+    window.addEventListener('pagehide', W);
+    document.addEventListener('visibilitychange', function(){
+      if(document.visibilityState === 'hidden') W();
+    });
+    var blurT;
+    window.addEventListener('blur', function(){
+      clearTimeout(blurT);
+      blurT = setTimeout(W, 500);
+    });
+    window.addEventListener('focus', function(){ clearTimeout(blurT); });
+    if(window.matchMedia){
+      try{
+        var pm = window.matchMedia('print');
+        if(pm.addEventListener){
+          pm.addEventListener('change', function(){ if(pm.matches) W(); });
+        } else if(pm.addListener){
+          pm.addListener(function(){ if(pm.matches) W(); });
+        }
+      }catch(e){}
+    }
+    setInterval(function(){
+      try{ if(window.matchMedia && window.matchMedia('print').matches) W(); }catch(e){}
+    }, 200);
+
+    // (4) 錨點點擊復原：點 #chapter-N → 強制解碼該章 iframe
+    document.addEventListener('click', function(e){
+      var a = e.target;
+      while(a && a.tagName !== 'A') a = a.parentElement;
+      if(!a) return;
+      var h = a.getAttribute('href');
+      if(!h || h.charAt(0) !== '#' || h.length < 2) return;
+      var t = document.getElementById(h.substring(1));
+      if(!t) return;
+      var ifr = t.querySelector('iframe.ch-frame[data-c1]');
+      if(ifr) window.__wyL10.decodeOneL1(ifr);
+      if(t.tagName === 'IFRAME' && t.hasAttribute('data-c1')) window.__wyL10.decodeOneL1(t);
+    }, true);
+
+    // (5) 解除 pre-guard
     var pg = document.getElementById('wy-preguard');
     if(pg && pg.parentNode){
-      // 保留 @media print 規則：移除 visibility:hidden 但留下 print rule
       pg.textContent = '@media print{html,body,body *{visibility:hidden!important;display:none!important;}body::before,body::after{content:""!important;display:none!important;}}@page{margin:0;size:auto;}';
     }
     document.documentElement.style.visibility = 'visible';
-    // 通知主 script 重新計算 iframe 高度
-    if(typeof window.dispatchEvent==='function'){
+
+    // 通知 master script 重新計算 iframe 高度
+    if(typeof window.dispatchEvent === 'function'){
       try{ window.dispatchEvent(new Event('resize')); }catch(e){}
     }
   });

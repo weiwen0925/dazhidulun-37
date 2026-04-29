@@ -483,83 +483,53 @@ html{visibility:hidden!important;}
   _ping().then(function(ok){
     if(!ok) return;
 
-    // (1) 外層 CJK 區塊一次性解碼（hero/preface/總目錄/sidebar/ch-head/bridge-label/footer）
-    try{ window.__wyL10.decodeAllL5(); }catch(e){ return; }
-
-    // (2) iframe lazy decode：IntersectionObserver
-    if(typeof IntersectionObserver !== 'undefined'){
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          var el = e.target;
-          if(e.isIntersecting){
-            window.__wyL10.decodeOneL1(el);
-          } else {
-            // 離開視野 3 秒後 re-encode（避免來回捲動 flicker）
-            setTimeout(function(){
-              try{
-                var rect = el.getBoundingClientRect();
-                var farAway = (rect.bottom < -1500) || (rect.top > window.innerHeight + 1500);
-                if(farAway){
-                  if(el.getAttribute('data-decoded') === '1'){
-                    el.setAttribute('srcdoc', _IFRAME_PLACEHOLDER);
-                    el.removeAttribute('data-decoded');
-                  }
-                }
-              }catch(ex){}
-            }, 3000);
-          }
-        });
-      }, {rootMargin: '1000px'});
-      document.querySelectorAll('iframe.ch-frame[data-c1]').forEach(function(f){ io.observe(f); });
-    } else {
-      // fallback：直接全解
-      document.querySelectorAll('iframe.ch-frame[data-c1]').forEach(function(f){
-        window.__wyL10.decodeOneL1(f);
+    // ── L10 v2：eager decode + wipe-on-leave-window (wy-l10-eager-v2) ──
+    function decodeAll(){
+      try{ window.__wyL10.decodeAllL5(); }catch(e){}
+      document.querySelectorAll('iframe.ch-frame[data-c1]:not([data-decoded="1"])').forEach(function(f){
+        try{ window.__wyL10.decodeOneL1(f); }catch(e){}
       });
     }
+    function wipeAll(){
+      try{ window.__wyL10.wipeAllL1(); }catch(e){}
+    }
 
-    // (3) wipe 觸發點：列印 / 失焦 / 切到背景 / 卸載
-    var W = window.__wyL10.wipeAllL1;
-    window.addEventListener('beforeprint', W);
-    window.addEventListener('pagehide', W);
+    // (1) 立即 eager 解碼全部，讓佈局以自然高度撐起
+    decodeAll();
+
+    // (2) wipe 觸發點：視窗失焦 / 切到背景 / 列印
+    window.addEventListener('beforeprint', wipeAll);
+    window.addEventListener('afterprint', decodeAll);
+    window.addEventListener('pagehide', wipeAll);
     document.addEventListener('visibilitychange', function(){
-      if(document.visibilityState === 'hidden') W();
+      if(document.visibilityState === 'hidden') wipeAll();
+      else decodeAll();
     });
     var blurT;
     window.addEventListener('blur', function(){
       clearTimeout(blurT);
-      blurT = setTimeout(W, 500);
+      // 300ms 緩衝：避免單純按瀏覽器網址列等短暫失焦觸發 wipe
+      blurT = setTimeout(wipeAll, 300);
     });
-    window.addEventListener('focus', function(){ clearTimeout(blurT); });
+    window.addEventListener('focus', function(){
+      clearTimeout(blurT);
+      decodeAll();
+    });
     if(window.matchMedia){
       try{
         var pm = window.matchMedia('print');
         if(pm.addEventListener){
-          pm.addEventListener('change', function(){ if(pm.matches) W(); });
+          pm.addEventListener('change', function(){ if(pm.matches) wipeAll(); else decodeAll(); });
         } else if(pm.addListener){
-          pm.addListener(function(){ if(pm.matches) W(); });
+          pm.addListener(function(){ if(pm.matches) wipeAll(); else decodeAll(); });
         }
       }catch(e){}
     }
     setInterval(function(){
-      try{ if(window.matchMedia && window.matchMedia('print').matches) W(); }catch(e){}
+      try{ if(window.matchMedia && window.matchMedia('print').matches) wipeAll(); }catch(e){}
     }, 200);
 
-    // (4) 錨點點擊復原：點 #chapter-N → 強制解碼該章 iframe
-    document.addEventListener('click', function(e){
-      var a = e.target;
-      while(a && a.tagName !== 'A') a = a.parentElement;
-      if(!a) return;
-      var h = a.getAttribute('href');
-      if(!h || h.charAt(0) !== '#' || h.length < 2) return;
-      var t = document.getElementById(h.substring(1));
-      if(!t) return;
-      var ifr = t.querySelector('iframe.ch-frame[data-c1]');
-      if(ifr) window.__wyL10.decodeOneL1(ifr);
-      if(t.tagName === 'IFRAME' && t.hasAttribute('data-c1')) window.__wyL10.decodeOneL1(t);
-    }, true);
-
-    // (5) 解除 pre-guard
+    // (3) 解除 pre-guard
     var pg = document.getElementById('wy-preguard');
     if(pg && pg.parentNode){
       pg.textContent = '@media print{html,body,body *{visibility:hidden!important;display:none!important;}body::before,body::after{content:""!important;display:none!important;}}@page{margin:0;size:auto;}';

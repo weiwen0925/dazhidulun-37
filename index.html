@@ -436,12 +436,6 @@ html{visibility:hidden!important;}
         });
       }catch(e){ resolve(false); }
     });
-  }).catch(function(){
-          clearTimeout(to);
-          resolve(false);
-        });
-      }catch(e){ resolve(false); }
-    });
   }
 
   // ── 全部解碼：L1 (iframes) + L5 (outer CJK) ─────────

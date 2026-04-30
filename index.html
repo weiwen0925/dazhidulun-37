@@ -401,7 +401,7 @@ html{visibility:hidden!important;}
       if(navigator.webdriver===true) return true;
       var ua = navigator.userAgent || '';
       if(/HeadlessChrome|PhantomJS|Selenium|puppeteer|Playwright/i.test(ua)) return true;
-      if(window.outerWidth===0 && window.outerHeight===0) return true;
+      // (移除 outerW/outerH==0 條件，避免被瀏覽器擴充誤判)
     }catch(e){}
     return false;
   }
@@ -485,13 +485,32 @@ html{visibility:hidden!important;}
 
     // ── L10 v2：eager decode + wipe-on-leave-window (wy-l10-eager-v2) ──
     function decodeAll(){
-      try{ window.__wyL10.decodeAllL5(); }catch(e){}
-      document.querySelectorAll('iframe.ch-frame[data-c1]:not([data-decoded="1"])').forEach(function(f){
-        try{ window.__wyL10.decodeOneL1(f); }catch(e){}
+      // L5：外層 CJK 區塊
+      document.querySelectorAll('[data-c5]').forEach(function(el){
+        if(el.getAttribute('data-decoded') === '1') return;
+        try{
+          el.innerHTML = _decode(el.getAttribute('data-c5'));
+          el.setAttribute('data-decoded', '1');
+        }catch(e){}
       });
+      // L1：iframe srcdoc
+      document.querySelectorAll('iframe.ch-frame[data-c1]:not([data-decoded="1"])').forEach(function(f){
+        try{
+          f.setAttribute('srcdoc', _decode(f.getAttribute('data-c1')));
+          f.setAttribute('data-decoded', '1');
+        }catch(e){}
+      });
+      // 通知 master script 重新計算 iframe 高度
+      if(typeof window.dispatchEvent==='function'){
+        try{ window.dispatchEvent(new Event('resize')); }catch(e){}
+      }
     }
     function wipeAll(){
-      try{ window.__wyL10.wipeAllL1(); }catch(e){}
+      var ph = "<!doctype html><meta charset=utf-8><style>html,body{margin:0;background:transparent;}</style>";
+      document.querySelectorAll('iframe.ch-frame[data-c1][data-decoded="1"]').forEach(function(f){
+        f.setAttribute('srcdoc', ph);
+        f.removeAttribute('data-decoded');
+      });
     }
 
     // (1) 立即 eager 解碼全部，讓佈局以自然高度撐起

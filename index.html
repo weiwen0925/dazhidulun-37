@@ -284,7 +284,7 @@ html{visibility:hidden!important;}
     rzT=setTimeout(resizeAllFrames,200);
   });
 
-  // 錨點點擊防錯跳（v3：smooth→auto + offsetTop + 多次 resize）
+  // 錨點點擊（v4：6 次 resettle，跟著 iframe 高度收斂走）
   document.addEventListener('click',function(e){
     var a=e.target;
     while(a&&a.tagName!=='A') a=a.parentElement;
@@ -295,18 +295,18 @@ html{visibility:hidden!important;}
     var el=document.getElementById(id);
     if(!el) return;
     e.preventDefault();
-    // 連續三次 resize，確保 iframe 高度收斂
-    resizeAllFrames();
-    setTimeout(resizeAllFrames, 60);
-    setTimeout(resizeAllFrames, 160);
-    setTimeout(function(){
+    function settle(){
       resizeAllFrames();
-      // offsetTop 是相對 document 的絕對位置，跨 iframe 可靠
-      var y = 0, node = el;
-      while(node){ y += node.offsetTop || 0; node = node.offsetParent; }
-      y = Math.max(0, y - 20);
-      window.scrollTo({top: y, behavior: 'auto'});
-    }, 280);
+      var y = 0, n = el;
+      while(n){ y += n.offsetTop || 0; n = n.offsetParent; }
+      window.scrollTo({top: Math.max(0, y - 20), behavior: 'auto'});
+    }
+    settle();
+    setTimeout(settle, 100);
+    setTimeout(settle, 300);
+    setTimeout(settle, 700);
+    setTimeout(settle, 1200);
+    setTimeout(settle, 2000);
   },true);
 
   window.addEventListener('scroll',updateProgress,{passive:true});

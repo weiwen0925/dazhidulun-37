@@ -225,7 +225,7 @@ html{visibility:hidden!important;}
   if(sbBrand){
     sbBrand.addEventListener('click',function(e){
       e.preventDefault();
-      window.scrollTo({top:0,behavior:'smooth'});
+      window.scrollTo({top:0,behavior:'auto'});
     });
   }
 
@@ -284,7 +284,7 @@ html{visibility:hidden!important;}
     rzT=setTimeout(resizeAllFrames,200);
   });
 
-  // 錨點點擊防錯跳
+  // 錨點點擊防錯跳（v3：smooth→auto + offsetTop + 多次 resize）
   document.addEventListener('click',function(e){
     var a=e.target;
     while(a&&a.tagName!=='A') a=a.parentElement;
@@ -295,13 +295,18 @@ html{visibility:hidden!important;}
     var el=document.getElementById(id);
     if(!el) return;
     e.preventDefault();
+    // 連續三次 resize，確保 iframe 高度收斂
     resizeAllFrames();
+    setTimeout(resizeAllFrames, 60);
+    setTimeout(resizeAllFrames, 160);
     setTimeout(function(){
       resizeAllFrames();
-      var rect=el.getBoundingClientRect();
-      var y=window.scrollY+rect.top-20;
-      window.scrollTo({top:y,behavior:'smooth'});
-    },60);
+      // offsetTop 是相對 document 的絕對位置，跨 iframe 可靠
+      var y = 0, node = el;
+      while(node){ y += node.offsetTop || 0; node = node.offsetParent; }
+      y = Math.max(0, y - 20);
+      window.scrollTo({top: y, behavior: 'auto'});
+    }, 280);
   },true);
 
   window.addEventListener('scroll',updateProgress,{passive:true});
@@ -333,7 +338,7 @@ html{visibility:hidden!important;}
     if(bt) bt.classList.toggle('show',window.scrollY>600);
   });
   if(bt) bt.addEventListener('click',function(){
-    window.scrollTo({top:0,behavior:'smooth'});
+    window.scrollTo({top:0,behavior:'auto'});
   });
 })();
 

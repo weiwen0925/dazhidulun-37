@@ -284,30 +284,47 @@ html{visibility:hidden!important;}
     rzT=setTimeout(resizeAllFrames,200);
   });
 
-  // 錨點點擊（v4：6 次 resettle，跟著 iframe 高度收斂走）
-  document.addEventListener('click',function(e){
-    var a=e.target;
-    while(a&&a.tagName!=='A') a=a.parentElement;
-    if(!a) return;
-    var h=a.getAttribute('href');
-    if(!h||h.charAt(0)!=='#'||h.length<2) return;
-    var id=h.substring(1);
-    var el=document.getElementById(id);
+  // 錨點點擊（v5：ResizeObserver 持續鎖定 anchor，不靠 setTimeout）
+  var _anchorTargetId = null;
+  function _settleAnchor(){
+    if(!_anchorTargetId) return;
+    var el = document.getElementById(_anchorTargetId);
     if(!el) return;
+    resizeAllFrames();
+    var y = 0, n = el;
+    while(n){ y += n.offsetTop || 0; n = n.offsetParent; }
+    window.scrollTo(0, Math.max(0, y - 20));
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target;
+    while(a && a.tagName !== 'A') a = a.parentElement;
+    if(!a) return;
+    var h = a.getAttribute('href');
+    if(!h || h.charAt(0) !== '#' || h.length < 2) return;
+    var id = h.substring(1);
+    if(!document.getElementById(id)) return;
     e.preventDefault();
-    function settle(){
-      resizeAllFrames();
-      var y = 0, n = el;
-      while(n){ y += n.offsetTop || 0; n = n.offsetParent; }
-      window.scrollTo({top: Math.max(0, y - 20), behavior: 'auto'});
-    }
-    settle();
-    setTimeout(settle, 100);
-    setTimeout(settle, 300);
-    setTimeout(settle, 700);
-    setTimeout(settle, 1200);
-    setTimeout(settle, 2000);
-  },true);
+    _anchorTargetId = id;
+    _settleAnchor();
+    // 5 秒後自動解除 lock（避免長期影響使用者）
+    setTimeout(function(){ _anchorTargetId = null; }, 5000);
+  }, true);
+  // 使用者主動操作 → 立即解除 lock
+  ['wheel','touchstart','keydown'].forEach(function(ev){
+    window.addEventListener(ev, function(e){
+      if(ev === 'keydown'){
+        var k = e.key;
+        if(k!=='PageUp' && k!=='PageDown' && k!=='ArrowUp' && k!=='ArrowDown' &&
+           k!==' ' && k!=='Home' && k!=='End') return;
+      }
+      _anchorTargetId = null;
+    }, {passive: true});
+  });
+  // ResizeObserver：iframe 任何高度變化 → 重新對齊
+  if(typeof ResizeObserver !== 'undefined'){
+    var _ro = new ResizeObserver(function(){ _settleAnchor(); });
+    document.querySelectorAll('iframe.ch-frame').forEach(function(f){ _ro.observe(f); });
+  }
 
   window.addEventListener('scroll',updateProgress,{passive:true});
   updateProgress();

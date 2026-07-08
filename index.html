@@ -817,4 +817,57 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")MODAL.classL
 upd();var c=0,iv=setInterval(function(){upd();if(++c>40)clearInterval(iv);},250);
 })();</script>
 <!--WY-C37P5:END-->
+<!--WY-C37P6:BEGIN-->
+<style id="wy-c37p6-css">
+.c37p6-fabbox{position:fixed;right:22px;bottom:78px;z-index:121;display:none;}
+.c37p6-fabbox.show{display:block;}
+.c37p6-btn{display:inline-flex;align-items:center;gap:9px;font-family:"Noto Sans TC",sans-serif;letter-spacing:.5px;color:#f7ecd2;background:linear-gradient(135deg,#573f38,#2e2420);padding:8px 15px;border-radius:22px;border:1px solid rgba(184,134,11,.6);box-shadow:0 4px 16px rgba(0,0,0,.3);cursor:pointer;opacity:.96;transition:opacity .3s,transform .2s,box-shadow .2s;}
+.c37p6-btn:hover{opacity:1;transform:translateY(-2px);box-shadow:0 6px 22px rgba(184,134,11,.5);}
+.c37p6-ic{font-size:15px;line-height:1;color:#ecc978;}
+.c37p6-ls{display:flex;flex-direction:column;align-items:flex-start;line-height:1.22;}
+.c37p6-l1{font-size:10.5px;font-weight:500;opacity:.82;white-space:nowrap;}
+.c37p6-l2{font-size:13px;font-weight:700;color:#faf1d8;white-space:nowrap;}
+.c37p6-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(28,20,12,.58);padding:16px;}
+.c37p6-modal.open{display:flex;}
+.c37p6-card{position:relative;background:#fbf7ee;max-width:900px;width:100%;max-height:88vh;overflow:auto;border:1px solid #d8c8ac;border-radius:14px;padding:30px 24px 22px;box-shadow:0 18px 50px rgba(0,0,0,.4);}
+.c37p6-card h3{margin:0 0 2px;font-family:"Noto Serif TC",serif;font-size:20px;color:#8b5e3c;}
+.c37p6-card .sub{margin:0 0 14px;font-family:"Noto Sans TC",sans-serif;font-size:13px;color:#6b5b4b;}
+.c37p6-close{position:absolute;top:12px;right:16px;width:34px;height:34px;border:none;border-radius:50%;background:#efe6d4;color:#8b5e3c;font-size:22px;line-height:1;cursor:pointer;z-index:2;}
+.c37p6-close:hover{background:#e3d5b8;}
+.c37p6-tbl{width:100%;border-collapse:collapse;font-family:"Noto Sans TC",sans-serif;font-size:13px;margin:.3em 0 1.2em;}
+.c37p6-tbl caption{font-family:"Noto Serif TC",serif;font-weight:700;color:#8b5e3c;font-size:14.5px;text-align:left;margin:.6em 0 .35em;line-height:1.5;}
+.c37p6-tbl th,.c37p6-tbl td{border:1px solid #d8c8ac;padding:.45em .6em;text-align:left;vertical-align:top;line-height:1.6;}
+.c37p6-tbl thead th{background:#8b5e3c;color:#f7ecd2;font-weight:700;}
+.c37p6-tbl td:first-child{white-space:nowrap;color:#8b5e3c;font-weight:700;background:#f0e8d8;}
+.c37p6-tbl tbody tr:nth-child(even) td{background:#f6efe0;}
+.c37p6-tbl b{color:#8b2500;}
+.c37p6-note{font-size:12px;color:#5a4e3a;line-height:1.9;background:#f6efe0;border-left:3px solid #c4956a;border-radius:0 6px 6px 0;padding:10px 13px;margin:4px 0 0;}
+.c37p6-note b{color:#8b2500;}
+@media(max-width:900px){.c37p6-fabbox{right:14px;}.c37p6-tbl{font-size:11.5px;}.c37p6-card{padding:26px 14px 16px;}}
+</style>
+<div class="c37p6-fabbox" id="c37p6Box"><button class="c37p6-btn" id="c37p6Btn" type="button" aria-label="開啟全景總表"><span class="c37p6-ic">▦</span><span class="c37p6-ls"><span class="c37p6-l1">本品 · 般若相應的邏輯</span><span class="c37p6-l2">剝洋蔥式三重破執 · 戲論寂滅</span></span></button></div><div class="c37p6-modal" id="c37p6Modal" role="dialog" aria-modal="true" aria-label="全景總表"><div class="c37p6-card"><button class="c37p6-close" id="c37p6Close" type="button" aria-label="關閉">×</button><h3>卷三十七·第六品 般若相應的邏輯 · 全景總表</h3><p class="sub">卷三十七·第六品｜佛即薩婆若·八對二邊·三句俱離·三重破執有無常無常行不行·戲論寂滅即相應</p><table class="c37p6-tbl"><caption>一、經文三層與剝洋蔥架構</caption><thead><tr><th>層次</th><th>內容</th></tr></thead><tbody><tr><td>體性同源</td><td>佛即是薩婆若、薩婆若即是佛，菩提即是薩婆若——三無分別，能證所證智體一體之證</td></tr><tr><td>八對二邊</td><td>有無、常無常、苦樂、我非我、寂滅非寂滅、空非空、有相無相、有作無作——於五蘊上俱不應習</td></tr><tr><td>三句俱離</td><td>不作是念我行般若、不行般若、非行非不行般若——外破諸法二邊、內破自心三句</td></tr><tr><td>第一重·本體論雙遣</td><td>破有無——狹道獨行喻，二邊俱死，應捨是則得實</td></tr><tr><td>第二重·現象界雙遣</td><td>破常無常——常則無生無滅無罪福，無常執實則六情不能取六塵，捨筏喻</td></tr><tr><td>第三重·實修論雙遣</td><td>破行不行——菩薩不可得般若亦不可得，增益執與損減執二俱過，人法雙亡無作者</td></tr></tbody></table><table class="c37p6-tbl"><caption>二、三重破執邏輯詳解</caption><thead><tr><th>辯次</th><th>核心論證</th></tr></thead><tbody><tr><td>破有</td><td>若諸法定實有則無因緣，若從因緣和合生則無自性即是空，著有事若無常則生憂惱</td></tr><tr><td>破無</td><td>若無法是實則無罪福無縛無解，惡取空致倫理修行體系崩塌，作諸罪業死墮地獄</td></tr><tr><td>諍論五階連鎖</td><td>相違→是非→共諍→結使→生業→開惡道門，實相中無有相違是非鬪諍</td></tr><tr><td>破常</td><td>若五眾常則無生無滅無罪福無善惡果報，世間如涅槃不壞相，如是妄語誰當信者</td></tr><tr><td>破無常</td><td>若諸法念念皆滅則六情不能取六塵，內心外塵俱無住不應得緣不應得知，無修習因緣果報</td></tr><tr><td>捨筏喻</td><td>無常是破常執之藥非實相之本體，病癒則藥廢，執無常為實即是把藥當飯吃</td></tr></tbody></table><table class="c37p6-tbl"><caption>三、中觀對接與核心心訣</caption><thead><tr><th>環節</th><th>內容</th></tr></thead><tbody><tr><td>寂滅正義</td><td>五眾寂滅者因緣生故無性、無性故寂滅、寂滅故如涅槃——當體即空非灰身滅智</td></tr><tr><td>煩惱即菩提</td><td>菩薩於煩惱生起絕對當下直接觀照三毒無自性，不壓不滅只是看穿，即失去束縛力</td></tr><tr><td>人法雙亡無作者</td><td>終日行而未嘗行，有修行之事無修行之我，有般若之行無能行之者</td></tr><tr><td>中論對接</td><td>第一重破有無對應觀有無品；第二重破常無常對應觀法品；第三重破行不行對應觀作作者品</td></tr><tr><td>四句否定</td><td>有（執常破）、無（執斷破）、亦有亦無（矛盾破）、非有非無（概念逃避破）——四句俱破即戲論寂滅</td></tr><tr><td>核心心訣</td><td>有無二見皆是險，常與無常亦非真，人法雙亡無作者，不著行處名相應——險徑獨行不住而過</td></tr></tbody></table><p class="c37p6-note">本品以「剝洋蔥式三重破執」由外而內層層深入：第一重破有無（本體論）、第二重破常無常（現象界）、第三重破行不行（實修論），三重之後所剩不是第五句，而是戲論寂滅、般若相應。真正的相應並非主客體的契合，而是一切二元對立的概念造作徹底止息——險徑獨行，不住而過，這便是中觀，這便是相應。</p></div></div>
+<script id="wy-c37p6-js">(function(){
+var CH=document.querySelectorAll("section.chapter");
+var BTN=document.getElementById("c37p6Btn"),BOX=document.getElementById("c37p6Box"),MODAL=document.getElementById("c37p6Modal");
+if(!CH.length||!BTN||!BOX||!MODAL)return;
+var TARGET=5;
+function curIdx(){var lim=window.innerHeight*0.35,idx=-1;for(var i=0;i<CH.length;i++){if(CH[i].getBoundingClientRect().top<lim)idx=i;}return idx;}
+var FSEL="#wyVid,.wy-vid-fab,#vidFab,.vid-fab,#videoFab,#wyVideoBtn,#wyFab,#wy-fab,#vid-floating,#floatingYt,.video-fab,.wy-vbtn,.wy-video-fab,.floating-yt",_fab,_ft=false;
+function fab(){if(_fab&&_fab.isConnected)return _fab;if(_ft)return _fab;_ft=true;_fab=document.querySelector(FSEL);return _fab;}
+function place(){
+  var base=null,eb=document.querySelector(".wy-ebox");
+  if(eb){var r=eb.getBoundingClientRect();if(r.height>4)base=Math.round(window.innerHeight-r.top)+8;}
+  if(base===null){var fEl=fab();if(fEl){var fr=fEl.getBoundingClientRect(),st=getComputedStyle(fEl);if(fr.height>0&&st.display!=="none"&&st.visibility!=="hidden")base=Math.round(window.innerHeight-fr.top)+10;}}
+  if(base===null)base=78;
+  BOX.style.bottom=base+"px";
+}
+function upd(){place();BOX.classList.toggle("show",curIdx()===TARGET);}
+var tk=false;function onS(){if(!tk){tk=true;requestAnimationFrame(function(){tk=false;upd();});}}
+window.addEventListener("scroll",onS,{passive:true});window.addEventListener("resize",onS);
+BTN.addEventListener("click",function(){MODAL.classList.add("open");});
+MODAL.addEventListener("click",function(e){if(e.target===MODAL||e.target.id==="c37p6Close")MODAL.classList.remove("open");});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")MODAL.classList.remove("open");});
+upd();var c=0,iv=setInterval(function(){upd();if(++c>40)clearInterval(iv);},250);
+})();</script>
+<!--WY-C37P6:END-->
 </body></html>

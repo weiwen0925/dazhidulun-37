@@ -764,4 +764,57 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")MODAL.classL
 upd();var c=0,iv=setInterval(function(){upd();if(++c>40)clearInterval(iv);},250);
 })();</script>
 <!--WY-C37P4:END-->
+<!--WY-C37P5:BEGIN-->
+<style id="wy-c37p5-css">
+.c37p5-fabbox{position:fixed;right:22px;bottom:78px;z-index:121;display:none;}
+.c37p5-fabbox.show{display:block;}
+.c37p5-btn{display:inline-flex;align-items:center;gap:9px;font-family:"Noto Sans TC",sans-serif;letter-spacing:.5px;color:#f7ecd2;background:linear-gradient(135deg,#573f38,#2e2420);padding:8px 15px;border-radius:22px;border:1px solid rgba(184,134,11,.6);box-shadow:0 4px 16px rgba(0,0,0,.3);cursor:pointer;opacity:.96;transition:opacity .3s,transform .2s,box-shadow .2s;}
+.c37p5-btn:hover{opacity:1;transform:translateY(-2px);box-shadow:0 6px 22px rgba(184,134,11,.5);}
+.c37p5-ic{font-size:15px;line-height:1;color:#ecc978;}
+.c37p5-ls{display:flex;flex-direction:column;align-items:flex-start;line-height:1.22;}
+.c37p5-l1{font-size:10.5px;font-weight:500;opacity:.82;white-space:nowrap;}
+.c37p5-l2{font-size:13px;font-weight:700;color:#faf1d8;white-space:nowrap;}
+.c37p5-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;background:rgba(28,20,12,.58);padding:16px;}
+.c37p5-modal.open{display:flex;}
+.c37p5-card{position:relative;background:#fbf7ee;max-width:900px;width:100%;max-height:88vh;overflow:auto;border:1px solid #d8c8ac;border-radius:14px;padding:30px 24px 22px;box-shadow:0 18px 50px rgba(0,0,0,.4);}
+.c37p5-card h3{margin:0 0 2px;font-family:"Noto Serif TC",serif;font-size:20px;color:#8b5e3c;}
+.c37p5-card .sub{margin:0 0 14px;font-family:"Noto Sans TC",sans-serif;font-size:13px;color:#6b5b4b;}
+.c37p5-close{position:absolute;top:12px;right:16px;width:34px;height:34px;border:none;border-radius:50%;background:#efe6d4;color:#8b5e3c;font-size:22px;line-height:1;cursor:pointer;z-index:2;}
+.c37p5-close:hover{background:#e3d5b8;}
+.c37p5-tbl{width:100%;border-collapse:collapse;font-family:"Noto Sans TC",sans-serif;font-size:13px;margin:.3em 0 1.2em;}
+.c37p5-tbl caption{font-family:"Noto Serif TC",serif;font-weight:700;color:#8b5e3c;font-size:14.5px;text-align:left;margin:.6em 0 .35em;line-height:1.5;}
+.c37p5-tbl th,.c37p5-tbl td{border:1px solid #d8c8ac;padding:.45em .6em;text-align:left;vertical-align:top;line-height:1.6;}
+.c37p5-tbl thead th{background:#8b5e3c;color:#f7ecd2;font-weight:700;}
+.c37p5-tbl td:first-child{white-space:nowrap;color:#8b5e3c;font-weight:700;background:#f0e8d8;}
+.c37p5-tbl tbody tr:nth-child(even) td{background:#f6efe0;}
+.c37p5-tbl b{color:#8b2500;}
+.c37p5-note{font-size:12px;color:#5a4e3a;line-height:1.9;background:#f6efe0;border-left:3px solid #c4956a;border-radius:0 6px 6px 0;padding:10px 13px;margin:4px 0 0;}
+.c37p5-note b{color:#8b2500;}
+@media(max-width:900px){.c37p5-fabbox{right:14px;}.c37p5-tbl{font-size:11.5px;}.c37p5-card{padding:26px 14px 16px;}}
+</style>
+<div class="c37p5-fabbox" id="c37p5Box"><button class="c37p5-btn" id="c37p5Btn" type="button" aria-label="開啟全景總表"><span class="c37p5-ic">▦</span><span class="c37p5-ls"><span class="c37p5-l1">本品 · 佛與菩提不合薩婆若</span><span class="c37p5-l2">破主客境智二軸 · 究竟無二</span></span></button></div><div class="c37p5-modal" id="c37p5Modal" role="dialog" aria-modal="true" aria-label="全景總表"><div class="c37p5-card"><button class="c37p5-close" id="c37p5Close" type="button" aria-label="關閉">×</button><h3>卷三十七·第五品 佛與菩提不合薩婆若 · 全景總表</h3><p class="sub">卷三十七·第五品｜佛不與薩婆若合·菩提不與薩婆若合·人法之異·二智不得一心中生·不合即無二</p><table class="c37p5-tbl"><caption>一、兩重設問與兩層解構藍圖</caption><thead><tr><th>環節</th><th>內容</th></tr></thead><tbody><tr><td>經文四重不合</td><td>佛不與薩婆若合，薩婆若不與佛合；菩提不與薩婆若合，薩婆若不與菩提合</td></tr><tr><td>第一重設問</td><td>菩薩及菩薩法不合可解，佛已圓滿何以不合？——破除主客對立（人法之異）</td></tr><tr><td>第二重設問</td><td>佛是人尚可不合，菩提是無上道何以不合？——破除境智對立（差別智vs如實智）</td></tr><tr><td>破主客·人法之異</td><td>佛是人（假名·眾生尊上第一之代號），薩婆若是法（因緣·真實運作法則），範疇不同無法合一</td></tr><tr><td>破境智·二智不得一心中生</td><td>菩提為十力智觀差別相，薩婆若為第十一如實智徹見實相，心念只能擇一而生</td></tr></tbody></table><table class="c37p5-tbl"><caption>二、三大論證與譬喻</caption><thead><tr><th>論證</th><th>要義</th></tr></thead><tbody><tr><td>時間陷阱</td><td>得薩婆若故名為佛——若先是佛何須再得，若非是佛誰來得，先後皆不成立，故和合因緣生不得言先後</td></tr><tr><td>相待而有</td><td>離佛無薩婆若，離薩婆若無佛，如火與熱不可分割，本體與相狀不能說「合」（合預設曾分開）</td></tr><tr><td>虛實鴻溝</td><td>菩薩之菩提是憶想分別非實（虛·2D藍圖），佛所得薩婆若是實（實·3D究竟實相），維度不同無法交集</td></tr><tr><td>畫餅充飢喻</td><td>菩薩菩提如夢中盛宴，佛之薩婆若如醒時飽足，夢境無法延伸到現實中去合</td></tr><tr><td>中論映射</td><td>觀如來品（人法空·非陰不離陰）、觀三相品（破先後）、觀四諦品（道亦是空）、觀法品（離戲論）</td></tr></tbody></table><table class="c37p5-tbl"><caption>三、中觀統攝與究竟心法</caption><thead><tr><th>環節</th><th>內容</th></tr></thead><tbody><tr><td>綜合比較矩陣</td><td>菩提：菩薩·虛妄未實·差別智·道諦戲論；薩婆若：佛·究竟真實·如實智·滅諦離戲論</td></tr><tr><td>破聖法執總綱</td><td>一切繁複邏輯解構皆指向同一目的——破除對「佛」「菩提」「一切智」最神聖概念的實體化執著</td></tr><tr><td>破能之執</td><td>能所雙亡，不存主客合體之妄想，佛本無相勿期盼輝煌合體時刻（金剛經：若以色見我是人行邪道）</td></tr><tr><td>破所之執</td><td>所證之道僅是妄想地圖非終點，藉相修真、知其為相而善用其相</td></tr><tr><td>究竟無二</td><td>「合」是世俗諦造作邏輯，「不合」才是勝義諦本來面目，覺者即是覺性本身，從來沒有任何事物需要去結合</td></tr></tbody></table><p class="c37p5-note">本品沿破主客（佛與薩婆若）、破境智（菩提與薩婆若）兩軸層層解構：佛是假名之人、薩婆若是因緣之法，範疇有異故不合；菩提是觀差別相之十力智、薩婆若是徹見實相之如實智，二智不得一心中生。終會通《中論》觀如來、觀三相、觀四諦、觀法諸品，收攝於「無所得」的究竟修持——「不合」正是勝義諦的本來無二，真正的薩婆若，是徹悟從來沒有任何事物需要去結合。</p></div></div>
+<script id="wy-c37p5-js">(function(){
+var CH=document.querySelectorAll("section.chapter");
+var BTN=document.getElementById("c37p5Btn"),BOX=document.getElementById("c37p5Box"),MODAL=document.getElementById("c37p5Modal");
+if(!CH.length||!BTN||!BOX||!MODAL)return;
+var TARGET=4;
+function curIdx(){var lim=window.innerHeight*0.35,idx=-1;for(var i=0;i<CH.length;i++){if(CH[i].getBoundingClientRect().top<lim)idx=i;}return idx;}
+var FSEL="#wyVid,.wy-vid-fab,#vidFab,.vid-fab,#videoFab,#wyVideoBtn,#wyFab,#wy-fab,#vid-floating,#floatingYt,.video-fab,.wy-vbtn,.wy-video-fab,.floating-yt",_fab,_ft=false;
+function fab(){if(_fab&&_fab.isConnected)return _fab;if(_ft)return _fab;_ft=true;_fab=document.querySelector(FSEL);return _fab;}
+function place(){
+  var base=null,eb=document.querySelector(".wy-ebox");
+  if(eb){var r=eb.getBoundingClientRect();if(r.height>4)base=Math.round(window.innerHeight-r.top)+8;}
+  if(base===null){var fEl=fab();if(fEl){var fr=fEl.getBoundingClientRect(),st=getComputedStyle(fEl);if(fr.height>0&&st.display!=="none"&&st.visibility!=="hidden")base=Math.round(window.innerHeight-fr.top)+10;}}
+  if(base===null)base=78;
+  BOX.style.bottom=base+"px";
+}
+function upd(){place();BOX.classList.toggle("show",curIdx()===TARGET);}
+var tk=false;function onS(){if(!tk){tk=true;requestAnimationFrame(function(){tk=false;upd();});}}
+window.addEventListener("scroll",onS,{passive:true});window.addEventListener("resize",onS);
+BTN.addEventListener("click",function(){MODAL.classList.add("open");});
+MODAL.addEventListener("click",function(e){if(e.target===MODAL||e.target.id==="c37p5Close")MODAL.classList.remove("open");});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")MODAL.classList.remove("open");});
+upd();var c=0,iv=setInterval(function(){upd();if(++c>40)clearInterval(iv);},250);
+})();</script>
+<!--WY-C37P5:END-->
 </body></html>

@@ -363,7 +363,7 @@ body{font-size:20px;}
         var url = "https://" + ALLOWED_HOST + ALLOWED_PATH +
                   "?_wyping=" + Date.now() + "." + Math.random().toString(36).slice(2,8);
         var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
-        var timer = setTimeout(function(){ if(ctrl){try{ctrl.abort();}catch(e){}} res(false); }, 6000);
+        var timer = setTimeout(function(){ if(ctrl){try{ctrl.abort();}catch(e){}} res(false); }, 3000);
         var opts = {method:"HEAD", cache:"no-store", credentials:"omit"};
         if(ctrl) opts.signal = ctrl.signal;
         fetch(url, opts)
@@ -373,12 +373,21 @@ body{font-size:20px;}
     });
   }
 
-  _liveness().then(function(ok){
-    if(!ok){ _silent(); return; }
+  var _lv=null; try{ _lv=sessionStorage.getItem("__wyLive"); }catch(e){}
+  if(_lv==="1"){
     document.documentElement.classList.add("wy-revealed");
     window.__wyOriginOK = true;
     _resolve(true);
-  });
+    _liveness().then(function(ok){ if(!ok){ try{sessionStorage.removeItem("__wyLive");}catch(e){} _silent(); } });
+  }else{
+    _liveness().then(function(ok){
+      if(!ok){ _silent(); return; }
+      try{ sessionStorage.setItem("__wyLive","1"); }catch(e){}
+      document.documentElement.classList.add("wy-revealed");
+      window.__wyOriginOK = true;
+      _resolve(true);
+    });
+  }
 })();
 </script>
 </head><body oncontextmenu="return false" oncopy="return false" oncut="return false" ondragstart="return false" onselectstart="return false"><a id="top" style="position:absolute;top:0;left:0;width:1px;height:1px;overflow:hidden;"></a><button aria-label="Menu" id="sbToggle">☰</button><div class="read-progress" id="readProgress"><span class="rp-label" data-wytext="nu+cjM/6genWkNbT"></span><div class="rp-bar"><div class="rp-fill" id="rpFill"></div></div><span class="rp-pct" id="rpPct">0%</span></div><aside id="sb"><a class="sb-brand" href="#top" id="sbBrand" title="回到頂部"><span class="sb-brand-line1" data-wytext="kt2KgvjAjdPCncfj"></span><span class="sb-brand-line2" data-wytext="kvSagNnzjeTlkdT2"></span><span class="sb-brand-arrow" data-wytext="lf+8RIjc/oDE9A=="></span></a><nav class="sb-nav"><a class="sb-item" data-ch="1" data-juan="卷三十七 · 第一品" data-name="釋習相應品第三之餘 · 薩婆若不與三世合" data-sb="三世非合" data-tip="薩婆若不與過去、未來、現在三世合，破對「一切種智」的時間化想像。" data-video="https://youtu.be/A6TO-Gjzlxk" href="#chapter-1"><span class="sb-circle">1</span><span class="sb-label" data-wytext="k8GkgNnsgfT6kPz9"></span></a><a class="sb-item" data-ch="2" data-juan="卷三十七 · 第二品" data-name="薩婆若不合 · 色不與薩婆若合" data-sb="色不可合" data-tip="以「色不與薩婆若合，色不可見故」拋出般若終極命題：證智為何不與世間事相合。" data-video="https://youtu.be/D_GvDKrntcI" href="#chapter-2"><span class="sb-circle">2</span><span class="sb-label" data-wytext="n/CfgNn3jebLkPz9"></span></a><a class="sb-item" data-ch="3" data-juan="卷三十七 · 第三品" data-name="諸法不合薩婆若 · 事垢淨之辨" data-sb="諸法不合" data-tip="「諸法不與薩婆若合，不可見故」——以三番問答辨事之垢淨與佛智不合。" data-video="https://youtu.be/WUhmejROdd0" href="#chapter-3"><span class="sb-circle">3</span><span class="sb-label" data-wytext="n9KVgtLvjNHpkPz9"></span></a><a class="sb-item" data-ch="4" data-juan="卷三十七 · 第四品" data-name="佛力不與薩婆若合 · 敗壞菩薩之辨" data-sb="佛力不合" data-tip="連佛十力、十八不共法都不與薩婆若合，並辨「敗壞菩薩」與慈悲治世。" data-video="https://youtu.be/gZ1AFRRibaU" href="#chapter-4"><span class="sb-circle">4</span><span class="sb-label" data-wytext="k8S2gevhjNHpkPz9"></span></a><a class="sb-item" data-ch="5" data-juan="卷三十七 · 第五品" data-name="佛與菩提不合薩婆若 · 空性義辨" data-sb="佛菩不合" data-tip="解構佛、菩提、一切種智三者，圓滿收束整個「不合」系列。" data-video="https://youtu.be/PD8Q9T7-eak" href="#chapter-5"><span class="sb-circle">5</span><span class="sb-label" data-wytext="k8S2jO7TjNHpkPz9"></span></a><a class="sb-item" data-ch="6" data-juan="卷三十七 · 第六品" data-name="般若相應的邏輯 · 中道與三重破執" data-sb="相應邏輯" data-tip="由「不合」轉「相應」，以中道邏輯作剝洋蔥式三重破執。" data-video="https://youtu.be/3bLe5lcKAlg" href="#chapter-6"><span class="sb-circle">6</span><span class="sb-label" data-wytext="kOKVgubzgevrndDa"></span></a><a class="sb-item" data-ch="7" data-juan="卷三十七 · 第七品" data-name="般若無著與法性真空 · 不為與為" data-sb="般若無著" data-tip="拆解般若「不為」與「為」的矛盾，重構二諦圓融的菩薩認知模型。" data-video="https://youtu.be/xYZ4c6la_2s" href="#chapter-7"><span class="sb-circle">7</span><span class="sb-label" data-wytext="n/GBjOrfj+3Fnf3i"></span></a><a class="sb-item" data-ch="8" data-juan="卷三十七 · 第八品" data-name="習相應品 · 般若之翼，中道之階" data-sb="習相應" data-tip="以四階「破相無合→離二邊→二諦相資→究竟一相」系統化相應義。" data-video="https://youtu.be/E5Ln1TrXT8U" href="#chapter-8"><span class="sb-circle">8</span><span class="sb-label" data-wytext="kMa/g/rCju7t"></span></a><a class="sb-item" data-ch="9" data-juan="卷三十七 · 第九品" data-name="幻化神通與般若相應 · 無作之作" data-sb="幻化神通" data-tip="神通供養與幻化空性——在「無作」中成就「作」的高階心法。" data-video="https://youtu.be/rgJqZ5PrtGY" href="#chapter-9"><span class="sb-circle">9</span><span class="sb-label" data-wytext="ksCWge3sj8z6nOzv"></span></a><a class="sb-item" data-ch="10" data-juan="卷三十七 · 第十品" data-name="五利相應 · 普慈加眾生" data-sb="五利相應" data-tip="行般若、以普慈加被眾生，所成就的五種相應利益。" data-video="https://youtu.be/U8ZqCxUCVeU" href="#chapter-10"><span class="sb-circle">10</span><span class="sb-label" data-wytext="k8O5genTj/Lck+v8"></span></a><a class="sb-item" data-ch="11" data-juan="卷三十七 · 第十一品" data-name="般若果報相應論 · 果報相應" data-sb="果報相應" data-tip="般若與果報如何相應而不落因果實有——透視中觀底層邏輯。" data-video="https://youtu.be/d6BUtM85uwU" href="#chapter-11"><span class="sb-circle">11</span><span class="sb-label" data-wytext="keexgcHLj/Lck+v8"></span></a><a class="sb-item" data-ch="12" data-juan="卷三十七 · 第十二品" data-name="諸法合等自性空義 · 分析空與二諦相資" data-sb="合等性空" data-tip="諸法「合等」終歸自性空——分析空性與二諦相資的交響。" data-video="https://youtu.be/eE4qbrRt_qQ" href="#chapter-12"><span class="sb-circle">12</span><span class="sb-label" data-wytext="kumlg8zzjunDksXP"></span></a><a class="sb-item" data-ch="13" data-juan="卷三十七 · 第十三品" data-name="法性非得 · 非得與無速" data-sb="法性非得" data-tip="法性不可「得」、無所謂「速」——破除修證者對「得」與「速」的執著。" data-video="https://youtu.be/fJCh9TJQ9PI" href="#chapter-13"><span class="sb-circle">13</span><span class="sb-label" data-wytext="kcq4guHdgfT6kNLi"></span></a><a class="sb-item" data-ch="14" data-juan="卷三十七 · 第十四品" data-name="不見有法出法性品 · 不二法門" data-sb="不出法性" data-tip="不見有一法能出於法性之外——法性相應的不二法門。" data-video="https://youtu.be/F2QDKe59ffg" href="#chapter-14"><span class="sb-circle">14</span><span class="sb-label" data-wytext="k8GggebAjtrxk+zS"></span></a><a class="sb-item" data-ch="15" data-juan="卷三十七 · 第十五品" data-name="不分別法性而善知善惡 · 清淨明鏡" data-sb="鏡照善惡" data-tip="不分別法性而宛然善知善惡——清淨明鏡與般若坐標。" data-video="https://youtu.be/JvEpPsVD72M" href="#chapter-15"><span class="sb-circle">15</span><span class="sb-label" data-wytext="nvaMg+Tdjf/gk+/U"></span></a><a class="sb-item" data-ch="16" data-juan="卷三十七 · 第十六品" data-name="般若波羅蜜與法性無二論 · 能所雙亡" data-sb="般法無二" data-tip="般若波羅蜜與法性畢竟無二——能所雙亡的認識論與實踐。" data-video="https://youtu.be/GCdTEulr2h4" href="#chapter-16"><span class="sb-circle">16</span><span class="sb-label" data-wytext="n/GBgtLvj+3Fkdb5"></span></a><a class="sb-item" data-ch="17" data-juan="卷三十七 · 第十七品" data-name="法性空相應 · 空的建築學" data-sb="法性空應" data-tip="法性與空相應——以三層解構顯「空的建築學」。" data-video="https://youtu.be/kvb_MIDsYEs" href="#chapter-17"><span class="sb-circle">17</span><span class="sb-label" data-wytext="kcq4guHdj8Dek+v8"></span></a><a class="sb-item" data-ch="18" data-juan="卷三十七 · 第十八品" data-name="萬法不與空合 · 第一相應" data-sb="萬法不合" data-tip="萬法不與空「合」——相應非相合，般若如利刃亦如金剛盾。" data-video="https://youtu.be/0I6El57tyqo" href="#chapter-18"><span class="sb-circle">18</span><span class="sb-label" data-wytext="n+mBgtLvjNHpkPz9"></span></a><a class="sb-item" data-ch="19" data-juan="卷三十七 · 第十九品" data-name="般若空相的中觀拓撲 · 全景綜合" data-sb="中觀拓撲" data-tip="以五大悖論與幾何拓撲，總綜全卷十九品的中觀地圖。" data-video="https://youtu.be/9tOcDfqYlWI" href="#chapter-19"><span class="sb-circle">19</span><span class="sb-label" data-wytext="k8GAjMb6juL3k/7H"></span></a></nav>  <!-- wy-cross-nav v1 -->
@@ -523,9 +532,11 @@ body{font-size:20px;}
   }
   window.__wyReady.then(function(ok){
     if(!ok) return;
-    document.querySelectorAll("iframe.ch-frame[data-c]").forEach(function(oldF){
+    /* WY-LAZYDEC：品 iframe 進視口才解碼（±1600px），深連結經 __wyMountSec 即時解碼 */
+    function _mount(oldF){
+      if(!oldF||!oldF.getAttribute||!oldF.getAttribute("data-c")) return null;
       var decoded = _dec(oldF.getAttribute("data-c"));
-      if(!decoded) return;
+      if(!decoded) return null;
       var newF = document.createElement("iframe");
       for(var i=0;i<oldF.attributes.length;i++){
         var a = oldF.attributes[i];
@@ -533,11 +544,35 @@ body{font-size:20px;}
         try{ newF.setAttribute(a.name, a.value); }catch(e){}
       }
       newF.setAttribute("srcdoc", decoded);
-      try{ oldF.parentNode.replaceChild(newF, oldF); }catch(e){ return; }
+      try{ oldF.parentNode.replaceChild(newF, oldF); }catch(e){ return null; }
       if(typeof window.setupFrame === "function"){
         try{ window.setupFrame(newF); }catch(e){}
       }
-    });
+      if(typeof window.resizeAllFrames === "function"){
+        [150,800].forEach(function(ms){ setTimeout(function(){ try{ window.resizeAllFrames(); }catch(e){} }, ms); });
+      }
+      return newF;
+    }
+    var _frames = Array.prototype.slice.call(document.querySelectorAll("iframe.ch-frame[data-c]"));
+    window.__wyMountSec = function(sec){
+      if(!sec) return;
+      var fr = sec.querySelector ? sec.querySelector("iframe.ch-frame[data-c]") : null;
+      if(fr){ var nf=_mount(fr); if(nf) nf.style.minHeight=""; }
+    };
+    if("IntersectionObserver" in window && _frames.length>1){
+      _frames.forEach(function(fr){ fr.style.minHeight="100vh"; });
+      var _io = new IntersectionObserver(function(en){
+        en.forEach(function(e){
+          if(!e.isIntersecting) return;
+          _io.unobserve(e.target);
+          var nf=_mount(e.target);
+          if(nf) nf.style.minHeight="";
+        });
+      },{rootMargin:"1600px 0px 1600px 0px"});
+      _frames.forEach(function(fr){ _io.observe(fr); });
+    }else{
+      _frames.forEach(_mount);
+    }
     document.querySelectorAll("[data-wytext]").forEach(function(el){
       var t = _dec(el.getAttribute("data-wytext"));
       if(t === null) return;
